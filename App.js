@@ -31,6 +31,15 @@ export default function App() {
   const [ok, setOk] = useState(true);
   const [currentPage, setCurrentPage] = useState(0);
 
+  const Days = ['Sun.', 'Mon.', 'Tues.', 'Weds.', 'Thur.', 'Fri.', 'Sat.'];
+  const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+
+  const currentDate = new Date();
+  const Day = Days[currentDate.getDay()];
+  const Month = months[currentDate.getMonth()];
+  const DayOfMonth = (`0${currentDate.getDate()}`).slice(-2);
+
+  // 날씨 함수
   const getWeather = async () => {
     // 위치 정보
     const { granted } = await Location.requestForegroundPermissionsAsync();
@@ -67,6 +76,7 @@ export default function App() {
     getWeather();
   }, []);
 
+  // 하단 스크롤
   const handleScroll = (event) => {
     const viewWidth = event.nativeEvent.layoutMeasurement.width;
     const contentOffsetX = event.nativeEvent.contentOffset.x;
@@ -83,6 +93,12 @@ export default function App() {
       <StatusBar style="light" />
       <View style={styles.city}>
         <Text style={styles.cityName}>{city}</Text>
+        <View style={styles.currentDateCon}>
+          <View style={styles.currentDate}>
+            <Text style={styles.dateFont}>{DayOfMonth} {Month}</Text>
+            <Text style={styles.boldDateFont}>{Day}</Text>
+          </View>
+        </View>
       </View>
       <ScrollView
         horizontal
@@ -140,6 +156,7 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   city: {
+    paddingTop: 20,
     flex: 1.2,
     justifyContent: "center",
     alignItems: "center",
@@ -148,6 +165,25 @@ const styles = StyleSheet.create({
     fontSize: 48,
     fontWeight: "500",
     color: "#fff",
+  },
+  currentDateCon: {
+    marginRight: 30,
+    paddingTop: 30,
+    flexDirection: "row",
+    justifyContent: "flex-end",
+    width: SCREEN_WIDTH,
+  },
+  currentDate: {
+    flexDirection: "column",
+    alignItems: "flex-end",
+  },
+  boldDateFont: {
+    color: "#fff",
+    fontWeight: "700",
+  },
+  dateFont: {
+    color: "#fff",
+    marginBottom: 5,
   },
   weather: {
     flexDirection: "row",
