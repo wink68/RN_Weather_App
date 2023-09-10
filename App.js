@@ -16,7 +16,13 @@ const API_KEY = "f106a472745a0b328406fea696f4bd2b";
 
 const { width: SCREEN_WIDTH } = Dimensions.get("window"); // 모바일 width 길이 가져오기
 const icons = {
-  "Clouds": "cloudy",
+  Clouds: "cloudy",
+  Clear: "day-sunny",
+  Atmosphere: "cloudy-gusts",
+  Snow: "snow",
+  Rain: "rains",
+  Drizzle: "rain",
+  Thunderstorm: "lightning",
 };
 
 export default function App() {
@@ -82,12 +88,12 @@ export default function App() {
         horizontal
         pagingEnabled // 페이지네이션 느낌
         showsHorizontalScrollIndicator={false} // 아래 스크롤 제거
-        contentContainerStyle={styles.weather}
+        // contentContainerStyle={styles.weather}
         onScroll={handleScroll}
         scrollEventThrottle={16} // 이벤트 발생 주기
       >
         {days && days.length === 0 ? (
-          <View style={styles.day}>
+          <View style={{ ...styles.day, alignItems: "center" }}>
             <ActivityIndicator
               size="large"
               color="#fff"
@@ -100,7 +106,15 @@ export default function App() {
               <Text style={styles.temp}>
                 {parseFloat(day.main.temp).toFixed(1)}°
               </Text>
-              <Text style={styles.description}>{day.weather[0].main}</Text>
+              <View style={styles.weather}>
+                <Fontisto
+                  name={icons[day.weather[0].main]}
+                  size={35}
+                  color="#fff"
+                  style={styles.weatherIcon}
+                />
+                <Text style={styles.description}>{day.weather[0].main}</Text>
+              </View>
               <Text style={styles.tinyText}>{day.weather[0].description}</Text>
             </View>
           ))
@@ -136,7 +150,13 @@ const styles = StyleSheet.create({
     color: "#fff",
   },
   weather: {
-    // backgroundColor: "tomato",
+    flexDirection: "row",
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  weatherIcon: {
+    marginTop: 5,
+    marginRight: 10,
   },
   day: {
     width: SCREEN_WIDTH,
@@ -147,7 +167,7 @@ const styles = StyleSheet.create({
     fontSize: 108,
   },
   description: {
-    marginTop: -20,
+    marginTop: -10,
     fontSize: 40,
     color: "#fff",
   },
@@ -172,6 +192,6 @@ const styles = StyleSheet.create({
     borderColor: '#ddd',
   },
   activeDot: {
-    backgroundColor: 'rgba(255, 255, 255, 0.6)',
+    backgroundColor: 'rgba(255, 255, 255, 0.8)',
   },
 });
